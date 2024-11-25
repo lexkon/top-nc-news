@@ -4,7 +4,6 @@ const app = require('../app')
 const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data')
-const topics = require("../db/data/test-data/topics")
 
 beforeEach(() => seed(data))
 afterAll(() => db.end())
@@ -25,9 +24,9 @@ describe("GET /api/topics", () => {
     return request(app)
     .get('/api/topics')
     .expect(200)
-    .then(() => {
-      expect(topics.length).toBe(3)
-      topics.forEach((topic) => {
+    .then(({body: {topics: {rows}}}) => {
+      expect(rows.length).toBe(3)
+      rows.forEach((topic) => {
         expect(topic).toMatchObject({
           slug: expect.any(String),
           description: expect.any(String)
@@ -35,6 +34,43 @@ describe("GET /api/topics", () => {
       })
     })
   })
+})
+
+describe("GET /api/articles/:article_id", () => {
+  test("200: returns article by id with correct properties", () => {
+    const expectedArticle = {
+      article_id: 3,
+      title: 'Eight pug gifs that remind me of mitch',
+      topic: 'mitch',
+      author: 'icellusedkars',
+      body: 'some gifs',
+      created_at: '2020-11-03T09:12:00.000Z',
+      votes: 0,
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+    }
+    return request(app)
+    .get('/api/articles/3')
+    .expect(200)
+    .expect(({body: { article }}) => {
+      expect(article).toEqual(expectedArticle)
+    })
+  }),
+  test("404: returns error when no article exists", () => {
+    return request(app)
+      .get('/api/articles/9999999')
+      .expect(404)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('article does not exist')
+      })
+  }),
+  test('400: returns error when given an invalid id', () => {
+    return request(app)
+      .get('/api/articles/not-an-article')
+      .expect(400)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request');
+      });
+  });
 })
 
 describe("Error handling", () => {
