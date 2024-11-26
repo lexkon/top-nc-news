@@ -18,7 +18,6 @@ describe("GET /api", () => {
       })
   })
 })
-
 describe("GET /api/topics", () => {
   test("200: returns an array of topic objects each with properties of 'slug' and 'description'", () => {
     return request(app)
@@ -35,7 +34,6 @@ describe("GET /api/topics", () => {
     })
   })
 })
-
 describe("GET /api/articles", () => {
   test("200: returns an array of article objects with descending sort by created_at, with properties author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
     return request(app)
@@ -59,7 +57,6 @@ describe("GET /api/articles", () => {
     })
   })
 })
-
 describe("GET /api/articles/:article_id", () => {
   test("200: returns article by id with correct properties", () => {
     const expectedArticle = {
@@ -96,7 +93,6 @@ describe("GET /api/articles/:article_id", () => {
       })
   })
 })
-
 describe("GET /api/articles/:article_id/comments", () => {
   test("200: returns array of comment objects ordered by recency", () => {
     return request(app)
@@ -143,6 +139,13 @@ describe("GET /api/articles/:article_id/comments", () => {
     })
   })
 })
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("", () => {
+    
+  })
+})
+
 
 describe("Error handling", () => {
   test("404: error when attempting to access a non-existent endpoint", () => {

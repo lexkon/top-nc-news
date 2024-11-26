@@ -46,4 +46,8 @@ const fetchArticleComments = (article_id) => {
     })
 }
 
-module.exports = {fetchArticles, fetchArticleById, fetchArticleComments}
+module.exports = {
+    fetchArticles, 
+    fetchArticleById, 
+    fetchArticleComments
+}

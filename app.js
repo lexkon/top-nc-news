@@ -1,16 +1,18 @@
 const express = require('express')
-const { getApi, getTopics, getArticleById, getArticles, getArticleComments } = require('./controllers/app.controller')
+const { getApi, getTopics, getArticleById, getArticles, getArticleComments } = require('./controllers')
 const { psqlErrorHandler, customErrorHandler } = require('./error-handlers')
 const app = express()
 
-// Uncomment for POST/PATCH 
-// app.use(express.json())
+app.use(express.json())
 
 app.get('/api', getApi)
 app.get('/api/topics', getTopics)
+
 app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id', getArticleById)
 app.get('/api/articles/:article_id/comments', getArticleComments)
+
+
 
 // Error handling
 app.use(psqlErrorHandler)
