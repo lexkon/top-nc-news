@@ -1,4 +1,5 @@
 exports.psqlErrorHandler = (err, req, res, next) => {
+    // console.log(err, "<-- err inside psqlErrorHandler")
     const psqlErrorCodes = {
         '22P02': { status: 400, msg: 'bad request' }
     }
@@ -13,7 +14,7 @@ exports.psqlErrorHandler = (err, req, res, next) => {
 }
 
 exports.customErrorHandler = (err, req, res, next) => {
-    console.log(err, "<-- err inside customErrorHandler")
+    // console.log(err, "<-- err inside customErrorHandler")
     if (err.status && err.msg) {
         return res.status(err.status).send( {msg: err.msg})
     } else {
@@ -22,6 +23,6 @@ exports.customErrorHandler = (err, req, res, next) => {
 }
 
 exports.serverErrorHandler = (err, req, res, next) => { 
-    console.log(err, 'in server error handler')
-    res.status(500).send({ msg: 'Internal server error' })
+    // console.log(err, '<-- err in serverErrorHandler')
+    res.status(500).send({ msg: 'internal server error' })
 }
