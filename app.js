@@ -14,7 +14,7 @@ app.get('/api/articles/:article_id', getArticleById)
 app.use(psqlErrorHandler)
 app.use(customErrorHandler)
 app.use('*', (_, res) => {
-    res.status(404).send({ msg: 'not an endpoint' });
+    res.status(404).send({ msg: 'not an endpoint' })
 })
 
 module.exports = app

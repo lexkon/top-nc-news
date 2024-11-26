@@ -68,9 +68,9 @@ describe("GET /api/articles/:article_id", () => {
       .get('/api/articles/not-an-article')
       .expect(400)
       .then(({body: { msg }}) => {
-        expect(msg).toBe('bad request');
-      });
-  });
+        expect(msg).toBe('bad request')
+      })
+  })
 })
 
 describe("Error handling", () => {
