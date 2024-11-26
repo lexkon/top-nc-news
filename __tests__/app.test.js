@@ -79,14 +79,6 @@ describe("GET /api/articles/:article_id", () => {
       expect(article).toEqual(expectedArticle)
     })
   }),
-  test("404: returns error when no article exists", () => {
-    return request(app)
-      .get('/api/articles/9999999')
-      .expect(404)
-      .then(({body: { msg }}) => {
-        expect(msg).toBe('article does not exist')
-      })
-  }),
   test('400: returns error when given an invalid id', () => {
     return request(app)
       .get('/api/articles/not-an-article')
@@ -94,6 +86,61 @@ describe("GET /api/articles/:article_id", () => {
       .then(({body: { msg }}) => {
         expect(msg).toBe('bad request')
       })
+  }),
+  test("404: returns error when no article exists", () => {
+    return request(app)
+      .get('/api/articles/9999999')
+      .expect(404)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('article does not exist')
+      })
+  })
+})
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("200: returns array of comment objects ordered by recency", () => {
+    return request(app)
+    .get('/api/articles/1/comments')
+    .expect(200)
+    .then(({body: {comments}}) => {
+      expect(comments.length).toBe(11)
+      expect(comments).toBeSortedBy('created_at', { descending: true })
+      comments.forEach((comment) => {
+        expect(comment.article_id).toBe(1)
+        expect(comment).toMatchObject({
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          comment_id: expect.any(Number),
+        })
+      })
+    })
+  }),
+  test("200: returns empty array when article has no comments", () => {
+    return request(app)
+    .get('/api/articles/2/comments')
+    .expect(200)
+    .then(({body: {comments}}) => {
+      expect(comments).toEqual([])
+      expect(comments.length).toBe(0)
+    })
+  }),
+  test('400: returns error when given an invalid id', () => {
+    return request(app)
+      .get('/api/articles/not-an-article/comments')
+      .expect(400)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+      })
+  }),
+  test("404: returns error when no article exists", () => {
+    return request(app)
+    .get('/api/articles/999999/comments')
+    .expect(404)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe("article does not exist")
+    })
   })
 })
 

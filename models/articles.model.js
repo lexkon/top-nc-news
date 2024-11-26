@@ -1,6 +1,6 @@
 const db = require('../db/connection')
 
-exports.fetchArticles = () => {
+const fetchArticles = () => {
     const sqlQuery = `SELECT
             articles.article_id,
             articles.title,
@@ -19,23 +19,31 @@ exports.fetchArticles = () => {
             articles.created_at DESC;`
     
     return db.query(sqlQuery)
-        .then((result) => {
-            if (result.rows.length === 0) {
-                return Promise.reject({ status: 500, msg: 'internal server error' })
-            }
-
-            return result.rows
+        .then(({rows}) => {
+            return rows
         })
 }
 
-exports.fetchArticleById = (article_id) => {
+const fetchArticleById = (article_id) => {
     return db
         .query(`SELECT * FROM articles WHERE article_id = $1`, [article_id])
-        .then((result) => {
-            if (result.rows.length === 0) {
+        .then(({rows}) => {
+            if (rows.length === 0) {
                 return Promise.reject({ status: 404, msg: 'article does not exist' })
             }
 
-            return result.rows[0]
+            return rows[0]
         })
 }
+
+const fetchArticleComments = (article_id) => {
+    return fetchArticleById(article_id)
+    .then(() => {
+        return db.query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [article_id])
+    })
+    .then(({rows}) => {
+        return rows
+    })
+}
+
+module.exports = {fetchArticles, fetchArticleById, fetchArticleComments}
