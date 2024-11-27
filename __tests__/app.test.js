@@ -140,8 +140,56 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
 })
 
-describe("POST /api/articles/:article_id/comments", () => {
-  test("", () => {
+describe.only("POST /api/articles/:article_id/comments", () => {
+  test("201: successful comment on article", () => {
+    const dataToSend = {username: "lurker", body: "literally the best post ever"}
+    return request(app)
+    .post('/api/articles/3/comments')
+    .send(dataToSend)
+    .expect(201)
+    .then(({body: {posted_comment}}) => {
+        expect(posted_comment).toBe(dataToSend.body)
+    })
+  }),
+  test("400: error when no username present in request", () => {
+    const dataToSend = {body: "literally the best post ever"}
+    return request(app)
+    .post('/api/articles/3/comments')
+    .send(dataToSend)
+    .expect(400)
+    .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+    })
+  }),
+  test("400: error when no comment body present in request", () => {
+    const dataToSend = {username: "lurker"}
+    return request(app)
+    .post('/api/articles/3/comments')
+    .send(dataToSend)
+    .expect(400)
+    .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+    })
+  }),
+  test("400: error when username does not exist in db", () => {
+    const dataToSend = {username: "anonbanana", body: "literally the best post ever"}
+    return request(app)
+    .post('/api/articles/3/comments')
+    .send(dataToSend)
+    .expect(400)
+    .then(({body: { msg }}) => {
+      expect(msg).toBe('bad request')
+    })
+  }),
+  test("404: error when no article is found", () => {
+    const dataToSend = {username: "lurker", body: "literally the best post ever"}
+    return request(app)
+    .post('/api/articles/999999/comments')
+    .send(dataToSend)
+    .expect(404)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe("article does not exist")
+    })
     
   })
 })
