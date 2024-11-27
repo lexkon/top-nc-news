@@ -36,8 +36,27 @@ const fetchArticleComments = async (article_id) => {
     return rows
 }
 
+const modifyArticle = async (article_id, inc_votes) => {
+    await checkExists("articles", "article_id", article_id, "article does not exist")
+    
+    const queryStr = `
+        UPDATE
+            articles
+        SET 
+            votes = votes + $1
+        WHERE
+            article_id = $2
+        RETURNING *`
+
+    const { rows } = await db.query(queryStr, [inc_votes, article_id])
+    
+    return rows[0]
+
+}
+
 module.exports = {
     fetchArticles, 
     fetchArticleById, 
-    fetchArticleComments
+    fetchArticleComments,
+    modifyArticle
 }

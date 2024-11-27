@@ -76,7 +76,7 @@ describe("GET /api/articles/:article_id", () => {
       expect(article).toEqual(expectedArticle)
     })
   }),
-  test('400: returns error when given an invalid id', () => {
+  test('400: returns error when given an invalid article id', () => {
     return request(app)
       .get('/api/articles/not-an-article')
       .expect(400)
@@ -122,7 +122,7 @@ describe("GET /api/articles/:article_id/comments", () => {
       expect(comments.length).toBe(0)
     })
   }),
-  test('400: returns error when given an invalid id', () => {
+  test('400: returns error when given an invalid article_id', () => {
     return request(app)
       .get('/api/articles/not-an-article/comments')
       .expect(400)
@@ -173,12 +173,20 @@ describe("POST /api/articles/:article_id/comments", () => {
   test("400: error when username does not exist in db", () => {
     const dataToSend = {username: "anonbanana", body: "literally the best post ever"}
     return request(app)
-    .post('/api/articles/3/comments')
-    .send(dataToSend)
-    .expect(400)
-    .then(({body: { msg }}) => {
-      expect(msg).toBe('bad request')
+      .post('/api/articles/3/comments')
+      .send(dataToSend)
+      .expect(400)
+      .expect(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
     })
+  }),
+  test('400: returns error when given an invalid article id', () => {
+    return request(app)
+      .post('/api/articles/not-an-article/comments')
+      .expect(400)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+      })
   }),
   test("404: error when no article is found", () => {
     const dataToSend = {username: "lurker", body: "literally the best post ever"}
@@ -189,13 +197,62 @@ describe("POST /api/articles/:article_id/comments", () => {
     .then(({body: {msg}}) => {
       expect(msg).toBe("article does not exist")
     })
-    
   })
 })
 
-// describe("PATCH /api/articles/:article_id", () => {
-  
-// })
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: returns article object with updated inc_votes property", () => {
+    const expectedArticle = {
+      article_id: 3,
+      title: 'Eight pug gifs that remind me of mitch',
+      topic: 'mitch',
+      author: 'icellusedkars',
+      body: 'some gifs',
+      created_at: '2020-11-03T09:12:00.000Z',
+      votes: 34,
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+    }
+    const newVotes = {inc_votes: 34}
+    return request(app)
+    .patch('/api/articles/3')
+    .send(newVotes)
+    .expect(200)
+    .expect(({body: { article }}) => {
+      expect(article.votes).toBe(34)
+      expect(article).toEqual(expectedArticle)
+    }) 
+  }),
+  test("400: returns error when given invalid request data", () => {
+    const newVotes = {inc_votes: 'banana'}
+    return request(app)
+    .patch('/api/articles/3')
+    .send(newVotes)
+    .expect(400)
+    .expect(({body: { msg }}) => {
+      expect(msg).toBe('bad request')
+    }) 
+  })
+  test('400: returns error when given an invalid article id', () => {
+    const newVotes = {inc_votes: 34}
+    return request(app)
+      .patch('/api/articles/not-an-article')
+      .send(newVotes)
+      .expect(400)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+      })
+  }),
+  test("404: error if article doesn't exist", () => {
+    const newVotes = {inc_votes: 34}
+    return request(app)
+    .patch('/api/articles/999999')
+    .send(newVotes)
+    .expect(404)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe("article does not exist")
+    })
+  })
+})
 
 
 describe("Error handling", () => {
