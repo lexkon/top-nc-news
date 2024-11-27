@@ -62,5 +62,18 @@
         "created_at": "2020-06-09T05:00:00.000Z"
       }
     ]    
+  },
+  "POST /api/articles/:article_id/comments" : {
+    "description": "request must contain username and comment body. request will return comment body",
+    "parameter": "INT",
+    "exampleResponse": { 
+      "request": { 
+        "username": "VALID_USERNAME", 
+        "body": "NEW_COMMENT_ON_ARTICLE"
+      },
+      "response": {
+        "body": "NEW_COMMENT_ON_ARTICLE"
+      }
+    }
   }
 }
