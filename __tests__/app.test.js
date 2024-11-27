@@ -199,7 +199,6 @@ describe("POST /api/articles/:article_id/comments", () => {
     })
   })
 })
-
 describe("PATCH /api/articles/:article_id", () => {
   test("200: returns article object with updated inc_votes property", () => {
     const expectedArticle = {
@@ -253,7 +252,29 @@ describe("PATCH /api/articles/:article_id", () => {
     })
   })
 })
-
+describe("DELETE /api/comments/:comment_id", () => {
+  test("204: response when comment successfully deleted", () => {
+    return request(app)
+    .delete('/api/comments/7')
+    .expect(204)
+  }),
+  test("400: error for invalid comment_id", () => {
+    return request(app)
+    .delete('/api/comments/banana')
+    .expect(400)
+    .then(({body: { msg }}) => {
+      expect(msg).toBe('bad request')
+    })
+  }),
+  test("404: error for non-existent comment", () => {
+    return request(app)
+    .delete('/api/comments/99999')
+    .expect(404)
+    .then(({body: { msg }}) => {
+      expect(msg).toBe('comment does not exist')
+    })
+  })
+})
 
 describe("Error handling", () => {
   test("404: error when attempting to access a non-existent endpoint", () => {
