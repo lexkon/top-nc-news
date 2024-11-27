@@ -1,5 +1,5 @@
 const express = require('express')
-const { getApi, getTopics, getArticleById, getArticles, getArticleComments } = require('./controllers')
+const { getApi, getTopics, getArticleById, getArticles, getArticleComments, postComment } = require('./controllers')
 const { psqlErrorHandler, customErrorHandler } = require('./error-handlers')
 const app = express()
 
@@ -12,7 +12,7 @@ app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id', getArticleById)
 app.get('/api/articles/:article_id/comments', getArticleComments)
 
-
+app.post('/api/articles/:article_id/comments', postComment)
 
 // Error handling
 app.use(psqlErrorHandler)
