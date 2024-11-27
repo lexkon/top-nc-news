@@ -139,7 +139,6 @@ describe("GET /api/articles/:article_id/comments", () => {
     })
   })
 })
-
 describe("POST /api/articles/:article_id/comments", () => {
   test("201: successful comment on article", () => {
     const dataToSend = {username: "lurker", body: "literally the best post ever"}
@@ -193,6 +192,10 @@ describe("POST /api/articles/:article_id/comments", () => {
     
   })
 })
+
+// describe("PATCH /api/articles/:article_id", () => {
+  
+// })
 
 
 describe("Error handling", () => {

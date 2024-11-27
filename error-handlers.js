@@ -26,3 +26,7 @@ exports.serverErrorHandler = (err, _, res, next) => {
     // console.log(err, '<-- err in serverErrorHandler')
     res.status(500).send({ msg: 'internal server error' })
 }
+
+exports.invalidURLHandler = (_, res) => {
+    res.status(404).send({ msg: 'not an endpoint' })
+}
