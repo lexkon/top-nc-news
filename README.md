@@ -16,7 +16,7 @@ Testing is handled with **Jest** and **Supertest**.
 
 ## Getting Started
 ### Install Dependencies
-```bash
+```
 npm install
 ```
 
@@ -32,12 +32,12 @@ Create your own `.env` files for development and test environments:
   ```
 
 ### Seed the Database
-```bash
+```
 npm run seed
 ```
 
 ### Run Tests
-```bash
+```
 npm test
 ```
 
