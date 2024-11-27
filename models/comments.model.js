@@ -14,6 +14,17 @@ const addComment = async (article_id, username, body) => {
     return rows[0]
 }
 
+const deleteCommentById = async (comment_id) => {
+    await checkExists("comments", "comment_id", comment_id, "comment does not exist")
+
+    const queryStr = `
+        DELETE FROM comments
+        WHERE comment_id = $1
+        RETURNING *;`
+    return await db.query(queryStr, [comment_id])
+}
+
 module.exports = {
-    addComment
+    addComment,
+    deleteCommentById
 }
