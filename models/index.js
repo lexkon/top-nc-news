@@ -1,4 +1,4 @@
-const {fetchArticles, fetchArticleById, fetchArticleComments} = require('./articles.model')
+const {fetchArticles, fetchArticleById, fetchArticleComments, modifyArticle} = require('./articles.model')
 const { addComment } = require('./comments.model')
 const { fetchTopics } = require('./topics.model')
 
@@ -8,5 +8,6 @@ module.exports = {
     fetchArticles,
     fetchArticleById,
     fetchArticleComments,
-    addComment
+    addComment,
+    modifyArticle
 }

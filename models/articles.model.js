@@ -1,6 +1,7 @@
 const db = require('../db/connection')
+const { checkExists } = require('./utils.model')
 
-const fetchArticles = () => {
+const fetchArticles = async () => {
     const sqlQuery = `SELECT
             articles.article_id,
             articles.title,
@@ -18,36 +19,44 @@ const fetchArticles = () => {
         ORDER BY
             articles.created_at DESC;`
     
-    return db.query(sqlQuery)
-        .then(({rows}) => {
-            return rows
-        })
+    const { rows } = await db.query(sqlQuery)
+    return rows
 }
 
-const fetchArticleById = (article_id) => {
-    return db
-        .query(`SELECT * FROM articles WHERE article_id = $1`, [article_id])
-        .then(({rows}) => {
-            if (rows.length === 0) {
-                return Promise.reject({ status: 404, msg: 'article does not exist' })
-            }
-
-            return rows[0]
-        })
+const fetchArticleById = async (article_id) => {
+    await checkExists('articles', 'article_id', article_id, "article does not exist")
+    
+    const { rows } = await db.query('SELECT * FROM articles WHERE article_id = $1', [article_id])
+    return rows[0]
 }
 
-const fetchArticleComments = (article_id) => {
-    return fetchArticleById(article_id)
-    .then(() => {
-        return db.query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [article_id])
-    })
-    .then(({rows}) => {
-        return rows
-    })
+const fetchArticleComments = async (article_id) => {
+    await checkExists('articles', 'article_id', article_id, "article does not exist")
+    const { rows } = await db.query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [article_id])
+    return rows
+}
+
+const modifyArticle = async (article_id, inc_votes) => {
+    await checkExists("articles", "article_id", article_id, "article does not exist")
+    
+    const queryStr = `
+        UPDATE
+            articles
+        SET 
+            votes = votes + $1
+        WHERE
+            article_id = $2
+        RETURNING *`
+
+    const { rows } = await db.query(queryStr, [inc_votes, article_id])
+    
+    return rows[0]
+
 }
 
 module.exports = {
     fetchArticles, 
     fetchArticleById, 
-    fetchArticleComments
+    fetchArticleComments,
+    modifyArticle
 }
