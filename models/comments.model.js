@@ -11,6 +11,7 @@ const addComment = async (article_id, username, body) => {
     INSERT INTO comments (body, article_id, author)
     VALUES ($1, $2, $3) RETURNING *;`
     const { rows } = await db.query(insertQry, [body, article_id, username])
+    
     return rows[0]
 }
 

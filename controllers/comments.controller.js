@@ -5,9 +5,7 @@ const postComment = (req, res, next) => {
     const { username, body} = req.body
     
     addComment(article_id, username, body)
-    .then(({body}) => {
-        return res.status(201).send({posted_comment: body})
-    })
+    .then((newComment) => res.status(201).send({ newComment }))
     .catch(next)
 }
 

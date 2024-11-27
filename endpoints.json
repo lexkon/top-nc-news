@@ -63,7 +63,7 @@
       }
     ]    
   },
-  "GET" : {
+  "GET /api/users" : {
     "description": "returns an array of all users as objects",
     "queries": [],
     "exampleResponse": [
@@ -82,14 +82,19 @@
     
   },
   "POST /api/articles/:article_id/comments" : {
-    "description": "request must contain username and comment body. request will return comment body",
+    "description": "request must contain username and comment body. request will return new comment object",
     "parameter": "INT",
     "exampleRequest": { 
       "username": "VALID_USERNAME", 
       "body": "NEW_COMMENT_ON_ARTICLE"
     },
-    "exampleResponse": { 
-        "body": "NEW_COMMENT_ON_ARTICLE"
+    "exampleResponse": {
+      "comment_id": 19,
+      "body": "NEW_COMMENT_ON_ARTICLE",
+      "article_id": 3,
+      "author": "VALID_USERNAME",
+      "votes": 0,
+      "created_at": "2024-11-27T16:48:33.308Z"
     }
   },
   "PATCH /api/articles/:article_id" : {

@@ -146,8 +146,9 @@ describe("POST /api/articles/:article_id/comments", () => {
     .post('/api/articles/3/comments')
     .send(dataToSend)
     .expect(201)
-    .then(({body: {posted_comment}}) => {
-        expect(posted_comment).toBe(dataToSend.body)
+    .then(({body: { newComment }}) => {
+      expect(newComment.author).toBe(dataToSend.username)
+      expect(newComment.body).toBe(dataToSend.body)
     })
   }),
   test("400: error when no username present in request", () => {
@@ -181,8 +182,10 @@ describe("POST /api/articles/:article_id/comments", () => {
     })
   }),
   test('400: returns error when given an invalid article id', () => {
+    const dataToSend = {username: "lurker", body: "literally the best post ever"}
     return request(app)
       .post('/api/articles/not-an-article/comments')
+      .send(dataToSend)
       .expect(400)
       .then(({body: { msg }}) => {
         expect(msg).toBe('bad request')
@@ -275,7 +278,6 @@ describe("DELETE /api/comments/:comment_id", () => {
     })
   })
 })
-
 describe("GET /api/users", () => {
   test("200: returns array of all users", () => {
     return request(app)
@@ -293,6 +295,7 @@ describe("GET /api/users", () => {
     })
   })
 })
+
 
 describe("Error handling", () => {
   test("404: error when attempting to access a non-existent endpoint", () => {
