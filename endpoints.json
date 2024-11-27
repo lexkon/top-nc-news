@@ -66,14 +66,28 @@
   "POST /api/articles/:article_id/comments" : {
     "description": "request must contain username and comment body. request will return comment body",
     "parameter": "INT",
+    "exampleRequest": { 
+      "username": "VALID_USERNAME", 
+      "body": "NEW_COMMENT_ON_ARTICLE"
+    },
     "exampleResponse": { 
-      "request": { 
-        "username": "VALID_USERNAME", 
         "body": "NEW_COMMENT_ON_ARTICLE"
-      },
-      "response": {
-        "body": "NEW_COMMENT_ON_ARTICLE"
-      }
     }
+  },
+  "PATCH /api/articles/:article_id" : {
+    "description": "updates `votes` property of article with integer value passed in request body. returns article object to reflect new `votes` value",
+    "parameter": "INT", 
+    "exampleRequest": { "inc_votes": "INT" },
+    "exampleResponse": {
+      "article_id": 3,
+      "title": "Eight pug gifs that remind me of mitch",
+      "topic": "mitch",
+      "author": "icellusedkars",
+      "body": "some gifs",
+      "created_at": "2020-11-03T09:12:00.000Z",
+      "votes": 34,
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+    }
+
   }
 }
