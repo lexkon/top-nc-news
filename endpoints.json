@@ -63,6 +63,24 @@
       }
     ]    
   },
+  "GET" : {
+    "description": "returns an array of all users as objects",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      },
+      {
+        "username": "icellusedkars",
+        "name": "sam",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+      },
+      "etc"
+    ]
+    
+  },
   "POST /api/articles/:article_id/comments" : {
     "description": "request must contain username and comment body. request will return comment body",
     "parameter": "INT",
@@ -88,6 +106,5 @@
       "votes": 34,
       "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
     }
-
   }
 }
