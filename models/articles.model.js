@@ -1,19 +1,7 @@
 const db = require('../db/connection')
 const { checkExists } = require('./utils.model')
 
-const fetchArticles = async (sort_by = 'created_at') => {
-    const validSorts = ['created_at', 
-        'article_id', 
-        'title', 
-        'topic', 
-        'author', 
-        'votes',
-        'comment_count'
-    ]
-
-    if(!validSorts.includes(sort_by)) {
-        return Promise.reject({ status: 400, msg: 'invalid sort query'})
-    }
+const fetchArticles = async (sort_by = 'created_at', order = 'DESC') => {
 
     let sqlQuery = `SELECT
             articles.article_id,
@@ -29,7 +17,7 @@ const fetchArticles = async (sort_by = 'created_at') => {
         ON articles.article_id = comments.article_id
         GROUP BY articles.article_id `
         
-    sqlQuery += `ORDER BY articles.${sort_by} DESC;`
+    sqlQuery += `ORDER BY articles.${sort_by} ${order};`
         
     const { rows } = await db.query(sqlQuery)
     return rows
