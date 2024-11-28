@@ -1,8 +1,8 @@
 const { fetchUsers } = require("../models")
 
-const getUsers = (_, res, next) => {
-    fetchUsers().then(({rows}) => res.status(200).send({users: rows}))
-    .catch(next)
+const getUsers = async (_, res) => {
+    const { rows } = await fetchUsers()
+    return res.status(200).send({users: rows})
 }
 
 module.exports = {
