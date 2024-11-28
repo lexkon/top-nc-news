@@ -1,23 +1,25 @@
 const { addComment, deleteCommentById } = require("../models")
 
-const postComment = (req, res, next) => {
+const postComment = async (req, res, next) => {
     const { article_id } = req.params
-    const { username, body} = req.body
-    
-    addComment(article_id, username, body)
-    .then((newComment) => res.status(201).send({ newComment }))
-    .catch(next)
+    const { username, body } = req.body
+
+    try {
+        const newComment = await addComment(article_id, username, body)
+        return res.status(201).send({ newComment })
+    } catch (error) {
+        next(error)
+    }
 }
 
-const deleteComment = (req, res, next) => {
+const deleteComment = async (req, res, next) => {
     const { comment_id } = req.params
-    
-    deleteCommentById(comment_id)
-    .then(({body}) => {
+    try {
+        await deleteCommentById(comment_id)
         return res.status(204).send()
-    })
-    .catch(next)
-
+    } catch (error) {
+        next(error)
+    }
 }
 
 module.exports = {
