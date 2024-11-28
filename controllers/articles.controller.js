@@ -1,8 +1,12 @@
 const { fetchArticleById, fetchArticles, fetchArticleComments, modifyArticle } = require('../models')
 
-const getArticles = (_, res) => {
-    fetchArticles()
-    .then((articles) => res.status(200).send({ articles }))
+const getArticles = (req, res, next) => {
+    const { sort_by } = req.query
+    fetchArticles(sort_by)
+    .then((articles) => {
+        return res.status(200).send({ articles })
+    })
+    .catch(next)
 }
 
 const getArticleById = (req, res, next) => {
