@@ -23,9 +23,9 @@ describe("GET /api/topics", () => {
     return request(app)
     .get('/api/topics')
     .expect(200)
-    .then(({body: {topics: {rows}}}) => {
-      expect(rows.length).toBe(3)
-      rows.forEach((topic) => {
+    .then(({body: {topics}}) => {
+      expect(topics.length).toBe(3)
+      topics.forEach((topic) => {
         expect(topic).toMatchObject({
           slug: expect.any(String),
           description: expect.any(String)
@@ -283,10 +283,10 @@ describe("GET /api/users", () => {
     return request(app)
     .get('/api/users')
     .expect(200)
-    .then(({body: {users: {rows}}}) => {
-      expect(rows.length).toBe(4)
-      rows.forEach((row) => {
-        expect(row).toMatchObject({
+    .then(({body: {users}}) => {
+      expect(users.length).toBe(4)
+      users.forEach((user) => {
+        expect(user).toMatchObject({
           username: expect.any(String),
           name: expect.any(String),
           avatar_url: expect.any(String)
