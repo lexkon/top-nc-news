@@ -57,9 +57,13 @@ const getArticleComments = async (req, res, next) => {
 
 const patchArticle = async (req, res, next) => {
     const {article_id} = req.params
-    const { inc_votes } = req.body
+    const { inc_votes, ...unacceptedData } = req.body
 
-    try {
+    if(Object.keys(unacceptedData).length > 0) {
+        return next({ status: 400, msg: 'invalid request'})
+    }
+
+    try {        
         const article = await modifyArticle(article_id, inc_votes)
         return res.status(200).send({article})
     } catch (error) {

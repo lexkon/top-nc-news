@@ -34,6 +34,7 @@ describe("GET /api/topics", () => {
     })
   })
 })
+
 describe("GET /api/articles", () => {
   test("200: returns an array of article objects with descending sort by created_at, with properties author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
     return request(app)
@@ -344,6 +345,16 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(msg).toBe('bad request')
       })
   }),
+  test("400: returns error when attempting to update data that doesn't exits ", () => {
+    const dataToSend = {bananas: 34}
+    return request(app)
+    .patch('/api/articles/3')
+    .send(dataToSend)
+    .expect(400)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe('invalid request')
+    })
+  }),
   test("404: error if article doesn't exist", () => {
     const newVotes = {inc_votes: 34}
     return request(app)
@@ -355,6 +366,7 @@ describe("PATCH /api/articles/:article_id", () => {
     })
   })
 })
+
 describe("DELETE /api/comments/:comment_id", () => {
   test("204: response when comment successfully deleted", () => {
     return request(app)
@@ -378,6 +390,68 @@ describe("DELETE /api/comments/:comment_id", () => {
     })
   })
 })
+describe("PATCH /api/comments/:comment_id", () => {
+  test("200: returns comment object with updated inc_votes property", () => {
+    const expectedComment = {
+      "comment_id": 16,
+      "body": "This is a bad article name",
+      "article_id": 6,
+      "author": "butter_bridge",
+      "votes": 35,
+      "created_at": "2020-10-11T15:23:00.000Z"
+      }
+    const newVotes = {inc_votes: 34}
+    return request(app)
+    .patch('/api/comments/16')
+    .send(newVotes)
+    .expect(200)
+    .expect(({body: { comment }}) => {
+      expect(comment.votes).toBe(35)
+      expect(comment).toEqual(expectedComment)
+    }) 
+  }),
+  test("400: returns error when given invalid request data", () => {
+    const newVotes = {inc_votes: 'banana'}
+    return request(app)
+    .patch('/api/comments/3')
+    .send(newVotes)
+    .expect(400)
+    .expect(({body: { msg }}) => {
+      expect(msg).toBe('bad request')
+    }) 
+  }),
+  test('400: returns error when given an invalid comment_id', () => {
+    const newVotes = {inc_votes: 34}
+    return request(app)
+      .patch('/api/comments/not-an-article')
+      .send(newVotes)
+      .expect(400)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe('bad request')
+      })
+  }),
+  test("400: returns error when attempting to update data that doesn't exits ", () => {
+    const dataToSend = {bananas: 34}
+    return request(app)
+    .patch('/api/comments/16')
+    .send(dataToSend)
+    .expect(400)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe('invalid request')
+    })
+  }),
+  test("404: error if comment doesn't exist", () => {
+    const newVotes = {inc_votes: 34}
+    return request(app)
+    .patch('/api/comments/999999')
+    .send(newVotes)
+    .expect(404)
+    .then(({body: {msg}}) => {
+      expect(msg).toBe("comment does not exist")
+    })
+  })
+})
+
 describe("GET /api/users", () => {
   test("200: returns array of all users", () => {
     return request(app)

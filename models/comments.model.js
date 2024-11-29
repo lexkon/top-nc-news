@@ -15,6 +15,23 @@ const addComment = async (article_id, username, body) => {
     return rows[0]
 }
 
+const modifyComment = async (comment_id, inc_votes) => {
+    await checkExists('comments', 'comment_id', comment_id, "comment does not exist")
+
+    const queryStr = `
+        UPDATE
+            comments
+        SET 
+            votes = votes + $1
+        WHERE
+            comment_id = $2
+        RETURNING *`
+
+    const { rows } = await db.query(queryStr, [inc_votes, comment_id])
+    
+    return rows[0]
+}
+
 const deleteCommentById = async (comment_id) => {
     await checkExists("comments", "comment_id", comment_id, "comment does not exist")
 
@@ -27,5 +44,6 @@ const deleteCommentById = async (comment_id) => {
 
 module.exports = {
     addComment,
+    modifyComment,
     deleteCommentById
 }
