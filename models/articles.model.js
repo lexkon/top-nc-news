@@ -45,8 +45,6 @@ const fetchArticleById = async (article_id) => {
         GROUP BY articles.article_id
     `
 
-    
-
     const { rows } = await db.query(sqlQuery, [article_id])
     return rows[0]
 }
