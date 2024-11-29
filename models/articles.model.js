@@ -1,7 +1,9 @@
 const db = require('../db/connection')
 const { checkExists } = require('./utils.model')
 
-const fetchArticles = async (sort_by = 'created_at', order = 'DESC') => {
+const fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic) => {
+
+    const queryValues = []
 
     let sqlQuery = `SELECT
             articles.article_id,
@@ -11,15 +13,22 @@ const fetchArticles = async (sort_by = 'created_at', order = 'DESC') => {
             articles.created_at,
             articles.votes,
             articles.article_img_url,
-            COUNT(comments.comment_id)::INT AS comment_count
+        COUNT(comments.comment_id)::INT AS comment_count
         FROM articles
-        LEFT JOIN comments 
-        ON articles.article_id = comments.article_id
-        GROUP BY articles.article_id `
+        JOIN comments 
+        ON articles.article_id = comments.article_id `
         
-    sqlQuery += `ORDER BY articles.${sort_by} ${order};`
+        if (topic) {
+            await checkExists('topics', 'slug', topic, "topic does not exist")
+            sqlQuery += ` WHERE articles.topic = $1 `
+            queryValues.push(topic)
+        }
         
-    const { rows } = await db.query(sqlQuery)
+        sqlQuery += `
+        GROUP BY articles.article_id 
+        ORDER BY articles.${sort_by} ${order};`
+    
+    const { rows } = await db.query(sqlQuery, queryValues)
     return rows
 }
 

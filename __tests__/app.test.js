@@ -57,7 +57,7 @@ describe("GET /api/articles", () => {
     })
   })
 })
-describe("GET /api/articles (sort and/or order queries)", () => {
+describe("GET /api/articles (sort, order, topic queries)", () => {
   describe("Query: sort_by", () => {
     test("200: responds with array of articles sorted by article_id, descending", () => {
       return request(app)
@@ -104,21 +104,54 @@ describe("GET /api/articles (sort and/or order queries)", () => {
         expect(articles).toBeSortedBy('created_at', { descending: false })
       })
     }),
-    test("200: responds with array of articles sorted by author, ascending", () => {
-      return request(app)
-      .get('/api/articles?sort_by=author&order=ASC')
-      .expect(200)
-      .then(({body: { articles } }) => {
-        expect(articles.length).not.toBe(0)
-        expect(articles).toBeSortedBy('author', { descending: false })
-      })
-    }),
     test("400: responds with error for invalid order query", () => {
       return request(app)
       .get('/api/articles?order=potato')
       .expect(400)
       .then(({body: {msg}}) => {
         expect(msg).toBe("invalid sort order")
+      })
+    })
+  })
+  describe("Query: topic", () => {
+    test("200: returns articles filtered by topic", () => {
+      return request(app)
+      .get('/api/articles?topic=mitch')
+      .expect(200)
+      .then(({body: { articles }}) => {
+        expect(articles.length).toBe(4)
+        expect(articles).toBeSortedBy('created_at', { descending: true })
+        articles.forEach((article) => {
+          expect(article.topic).toBe('mitch')
+        })
+      })
+    }),
+    test("200: returns empty array for valid topic with no articles", () => {
+      return request(app)
+      .get('/api/articles?topic=paper')
+      .expect(200)
+      .then(({body: { articles }}) => {
+        expect(articles.length).toBe(0)
+      })
+    }),
+    test("404: returns an error when topic does not exist", () => {
+      return request(app)
+      .get('/api/articles?topic=sausages')
+      .expect(404)
+      .then(({body: { msg }}) => {
+        expect(msg).toBe("topic does not exist")
+      })
+    })
+  })
+  describe("Combinations of queries", () => {
+    test("200: responds with array of articles sorted by author, ascending, & topic", () => {
+      return request(app)
+      .get('/api/articles?sort_by=author&order=ASC&topic=mitch')
+      .expect(200)
+      .then(({body: { articles } }) => {
+        console.log(articles)
+        expect(articles.length).not.toBe(0)
+        expect(articles).toBeSortedBy('author', { descending: false })
       })
     })
   })

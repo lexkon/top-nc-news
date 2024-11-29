@@ -26,14 +26,15 @@
       ]
     }
   },
-  "GET /api/articles?sort_by=SORT&order=ORDER (sort and/or order queries": {
+  "GET /api/articles?sort_by=SORT&order=ORDER&topic=TOPIC (sort, order, topic queries)": {
     "description": "serves an array of all articles sorted and ordered",
     "queries": { 
       "sort_by": [ "article_id", "comment_count", "created_at", "author", "order", "title", "votes" ],
-      "order": ["ASC", "DESC"]
+      "order": ["ASC", "DESC"],
+      "topic": ["STRING_OF_VALID_TOPIC"]
     },
     "exampleResponse": {
-      "?sort_by=author&order=ASC": [
+      "?sort_by=author&order=ASC&topic=mitch": [
         {
           "article_id": 13,
           "title": "Another article about Mitch",
