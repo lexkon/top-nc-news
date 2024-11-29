@@ -131,7 +131,7 @@ describe("GET /api/articles (sort, order, topic queries)", () => {
       .get('/api/articles?topic=paper')
       .expect(200)
       .then(({body: { articles }}) => {
-        expect(articles.length).toBe(0)
+        expect(articles).toEqual([])
       })
     }),
     test("404: returns an error when topic does not exist", () => {
