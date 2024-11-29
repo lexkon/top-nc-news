@@ -1,7 +1,8 @@
 const { fetchArticleById, fetchArticles, fetchArticleComments, modifyArticle } = require('../models')
+const { checkExists } = require('../models/utils.model')
 
 const getArticles = async (req, res, next) => {
-    const { sort_by, order, ...unacceptedQueries } = req.query
+    const { sort_by, order, topic, ...unacceptedQueries } = req.query
     
     const validSorts = ['created_at', 
         'article_id', 
@@ -26,7 +27,7 @@ const getArticles = async (req, res, next) => {
     }
 
     try {
-        const articles = await fetchArticles(sort_by, order)
+        const articles = await fetchArticles(sort_by, order, topic)
         return res.status(200).send({ articles })
     } catch (error) {
         next(error)
