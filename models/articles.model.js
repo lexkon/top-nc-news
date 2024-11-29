@@ -34,8 +34,20 @@ const fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic) => {
 
 const fetchArticleById = async (article_id) => {
     await checkExists('articles', 'article_id', article_id, "article does not exist")
+
+    const sqlQuery = `SELECT
+            articles.*,
+        COUNT(comments.comment_id)::INT AS comment_count
+        FROM articles
+        JOIN comments 
+        ON articles.article_id = comments.article_id 
+        WHERE articles.article_id = $1
+        GROUP BY articles.article_id
+    `
+
     
-    const { rows } = await db.query('SELECT * FROM articles WHERE article_id = $1', [article_id])
+
+    const { rows } = await db.query(sqlQuery, [article_id])
     return rows[0]
 }
 
