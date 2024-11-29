@@ -1,7 +1,7 @@
 # Northcoders News API
 
 A RESTful API built with **Node.js v22.5.1**, **Express**, and **PostgreSQL v14.12** for a community news site, similar to [Reddit](https://www.reddit.com). 
-The API allows users to interact with articles, comments, topics, and users. 
+The API enables users to engage with articles, comments, topics, and users by performing CRUD operations.
 Testing is handled with **Jest** and **Supertest**.
 
 [**Currently live and hosted on Render**](https://top-nc-news.onrender.com/api)
@@ -50,6 +50,9 @@ Testing is handled with **Jest** and **Supertest**.
 ### Users
 - **GET /api/users**  
   Fetch all users
+
+- **GET /api/users/:username**  
+  Fetch a single user by username
 
 
 ## Getting Started
