@@ -2,7 +2,7 @@ const { getApi} = require('./app.controller')
 const { getTopics } = require('./topics.controller')
 const { getArticles, getArticleById, getArticleComments, patchArticle } = require('./articles.controller')
 const { postComment, deleteComment } = require('./comments.controller')
-const { getUsers } = require('./users.controller')
+const { getUsers, getUserById } = require('./users.controller')
 
 module.exports = {
     getApi,
@@ -11,6 +11,7 @@ module.exports = {
     getArticleById,
     getArticleComments,
     getUsers,
+    getUserById,
     patchArticle,
     postComment,
     deleteComment

@@ -396,6 +396,31 @@ describe("GET /api/users", () => {
   })
 })
 
+describe("GET /api/users/:username", () => {
+  test("200: returns valid user with username, avatar_url, name info", () => {
+    const expectedUser = {
+      username: 'butter_bridge',
+      name: 'jonny',
+      avatar_url:
+        'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+    }
+    return request(app)
+    .get('/api/users/butter_bridge')
+    .expect(200)
+    .then(({body: { user }}) => {
+      expect(expectedUser).toEqual(user)
+    })
+  }),
+  test("404: error when no user found", () => {
+    return request(app)
+    .get('/api/users/potatowaffle')
+    .expect(404)
+    .then(({body: { msg }}) => {
+      expect(msg).toEqual("user does not exist")
+    })
+  })
+})
+
 
 describe("Error handling", () => {
   test("404: error when attempting to access a non-existent endpoint", () => {
