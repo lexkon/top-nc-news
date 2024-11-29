@@ -395,7 +395,6 @@ describe("GET /api/users", () => {
     })
   })
 })
-
 describe("GET /api/users/:username", () => {
   test("200: returns valid user with username, avatar_url, name info", () => {
     const expectedUser = {

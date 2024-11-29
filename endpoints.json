@@ -221,7 +221,17 @@
       },
       "etc"
     ]
-    
+  },
+  "GET /api/users:username" : {
+    "description": "returns an array of all users as objects",
+    "request": "/api/users/users/butter_bridge",
+    "exampleResponse": [
+      {
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      }
+    ]
   },
   "POST /api/articles/:article_id/comments" : {
     "description": "request must contain username and comment body. request will return new comment object",
