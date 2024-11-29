@@ -44,6 +44,8 @@ Testing is handled with **Jest** and **Supertest**.
   Update an article (e.g. votes)
 
 ### Comments
+- **PATCH /api/comments/:comment_id**  
+  Update a comment (e.g. votes)
 - **DELETE /api/comments/:comment_id**  
   Delete a specific comment
 
