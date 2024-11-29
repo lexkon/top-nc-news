@@ -149,7 +149,6 @@ describe("GET /api/articles (sort, order, topic queries)", () => {
       .get('/api/articles?sort_by=author&order=ASC&topic=mitch')
       .expect(200)
       .then(({body: { articles } }) => {
-        console.log(articles)
         expect(articles.length).not.toBe(0)
         expect(articles).toBeSortedBy('author', { descending: false })
       })
@@ -166,12 +165,14 @@ describe("GET /api/articles/:article_id", () => {
       body: 'some gifs',
       created_at: '2020-11-03T09:12:00.000Z',
       votes: 0,
-      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+      article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+      comment_count: 2
     }
     return request(app)
     .get('/api/articles/3')
     .expect(200)
     .expect(({body: { article }}) => {
+      expect(article.comment_count).toBe(2)
       expect(article).toEqual(expectedArticle)
     })
   }),
