@@ -1,4 +1,4 @@
-const { getApi} = require('./app.controller')
+const { getApi } = require('./app.controller')
 const { getTopics } = require('./topics.controller')
 const { getArticles, getArticleById, getArticleComments, patchArticle } = require('./articles.controller')
 const { postComment, deleteComment, patchComment } = require('./comments.controller')

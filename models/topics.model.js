@@ -4,4 +4,4 @@ const fetchTopics = () => {
     return db.query(`SELECT * FROM topics;`)
 }
 
-module.exports = {fetchTopics}
+module.exports = { fetchTopics }

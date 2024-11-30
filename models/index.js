@@ -1,4 +1,4 @@
-const {fetchArticles, fetchArticleById, fetchArticleComments, modifyArticle} = require('./articles.model')
+const { fetchArticles, fetchArticleById, fetchArticleComments, modifyArticle } = require('./articles.model')
 const { addComment, deleteCommentById, modifyComment } = require('./comments.model')
 const { fetchTopics } = require('./topics.model')
 const { fetchUsers, fetchUserById } = require('./users.model')

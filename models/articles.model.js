@@ -17,17 +17,17 @@ const fetchArticles = async (sort_by = 'created_at', order = 'DESC', topic) => {
         FROM articles
         JOIN comments 
         ON articles.article_id = comments.article_id `
-        
-        if (topic) {
-            await checkExists('topics', 'slug', topic, "topic does not exist")
-            sqlQuery += ` WHERE articles.topic = $1 `
-            queryValues.push(topic)
-        }
-        
-        sqlQuery += `
+
+    if (topic) {
+        await checkExists('topics', 'slug', topic, "topic does not exist")
+        sqlQuery += ` WHERE articles.topic = $1 `
+        queryValues.push(topic)
+    }
+
+    sqlQuery += `
         GROUP BY articles.article_id 
         ORDER BY articles.${sort_by} ${order};`
-    
+
     const { rows } = await db.query(sqlQuery, queryValues)
     return rows
 }
@@ -57,7 +57,7 @@ const fetchArticleComments = async (article_id) => {
 
 const modifyArticle = async (article_id, inc_votes) => {
     await checkExists("articles", "article_id", article_id, "article does not exist")
-    
+
     const queryStr = `
         UPDATE
             articles
@@ -68,14 +68,14 @@ const modifyArticle = async (article_id, inc_votes) => {
         RETURNING *`
 
     const { rows } = await db.query(queryStr, [inc_votes, article_id])
-    
+
     return rows[0]
 
 }
 
 module.exports = {
-    fetchArticles, 
-    fetchArticleById, 
+    fetchArticles,
+    fetchArticleById,
     fetchArticleComments,
     modifyArticle
 }
