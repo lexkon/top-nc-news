@@ -120,7 +120,7 @@ describe("GET /api/articles (sort, order, topic queries)", () => {
         .get('/api/articles?topic=mitch')
         .expect(200)
         .then(({ body: { articles } }) => {
-          expect(articles.length).toBe(4)
+          expect(articles.length).toBe(12)
           expect(articles).toBeSortedBy('created_at', { descending: true })
           articles.forEach((article) => {
             expect(article.topic).toBe('mitch')
