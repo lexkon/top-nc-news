@@ -6,7 +6,7 @@ Testing is handled with **Jest** and **Supertest**.
 
 [**Currently live and hosted on Render**](https://top-nc-news.onrender.com/api)
 
-[*Frontend repo here*](https://github.com/lexkon/top-nc-news)
+[*Frontend repo here*](https://www.github.com/lexkon/top-nc-news-react/)
 
 ## Features
 - **GET /api**: Provides full API documentation in JSON
