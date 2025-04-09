@@ -4,9 +4,11 @@ A RESTful API built with **Node.js v22.5.1**, **Express**, and **PostgreSQL v14.
 The API enables users to engage with articles, comments, topics, and users by performing CRUD operations.
 Testing is handled with **Jest** and **Supertest**.
 
-[**Currently live and hosted on Render**](https://top-nc-news.onrender.com/api)
+* [**API currently live and hosted on Render**](https://top-nc-news.onrender.com/api)
+* [*Frontend repo here*](https://www.github.com/lexkon/top-nc-news-react/)
 
-[*Frontend repo here*](https://www.github.com/lexkon/top-nc-news-react/)
+> [Deployed website here](https://top-nc-news.netlify.app/)
+> Fair warning, having used free services means it might take some time to load
 
 ## Features
 - **GET /api**: Provides full API documentation in JSON
